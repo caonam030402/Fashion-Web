@@ -1,12 +1,41 @@
+"use client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { FaFacebookSquare } from "react-icons/fa";
 import { FaPinterestSquare } from "react-icons/fa";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { Combobox } from "../ui/combobox";
 
+const dataLanguage = [
+  {
+    value: "english",
+    label: "English",
+  },
+  {
+    value: "viet nam",
+    label: "Viet Nam",
+  },
+];
+
+const dataCurrency = [
+  {
+    value: "usd",
+    label: "Usd (Usa)",
+  },
+  {
+    value: "vnd",
+    label: "Vnd (Viet Nam)",
+  },
+  {
+    value: "krw",
+    label: "Krw (Korea)",
+  },
+];
+
 export default function Footer() {
+  const [valueCurrency, setValueCurrency] = useState("");
+  const [valueLanguage, setValueLanguage] = useState("");
   return (
     <div className="container py-10" suppressHydrationWarning>
       <div className="grid-cols-12 grid gap-10">
@@ -55,8 +84,16 @@ export default function Footer() {
       </div>
       <div className="mt-5 flex justify-between items-center">
         <div className="flex gap-7">
-          <Combobox />
-          <Combobox />
+          <Combobox
+            data={dataLanguage}
+            setValue={setValueLanguage}
+            value={valueLanguage}
+          />
+          <Combobox
+            data={dataCurrency}
+            setValue={setValueCurrency}
+            value={valueCurrency}
+          />
         </div>
         <div className="text-xs">
           © 2024 - Copyright belongs to Cao Nam Limited

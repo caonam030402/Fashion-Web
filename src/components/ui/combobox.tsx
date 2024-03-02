@@ -16,35 +16,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { IoSearchOutline } from "react-icons/io5";
 import { IoMdCheckmark } from "react-icons/io";
 
-const frameworks = [
-  {
-    value: "next.js",
-    label: "Next.js",
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-  },
-  {
-    value: "remix",
-    label: "Remix",
-  },
-  {
-    value: "astro",
-    label: "Astro",
-  },
-];
+interface Props {
+  data: {
+    value: string;
+    label: string;
+  }[];
+  value: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
+}
 
-export function Combobox() {
+export function Combobox({ data, setValue, value }: Props) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -56,27 +40,27 @@ export function Combobox() {
           className="w-[200px] justify-between"
         >
           {value
-            ? frameworks.find((framework) => framework.value === value)?.label
-            : "Select framework..."}
+            ? data.find((item) => item.value === value)?.label
+            : data[1].label}
           <RxCaretSort />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command>
-          <CommandInput placeholder="Search framework..." className="h-9" />
-          <CommandEmpty>No framework found.</CommandEmpty>
+          <CommandInput placeholder="Search...." className="h-9" />
+          <CommandEmpty>Not found</CommandEmpty>
           <CommandGroup>
-            {frameworks.map((framework) => (
+            {data.map((item) => (
               <CommandItem
-                key={framework.value}
-                value={framework.value}
+                key={item.value}
+                value={item.value}
                 onSelect={(currentValue) => {
                   setValue(currentValue === value ? "" : currentValue);
                   setOpen(false);
                 }}
               >
-                {framework.label}
-                {value === framework.value && <IoMdCheckmark />}
+                {item.label}
+                {value === item.value && <IoMdCheckmark />}
               </CommandItem>
             ))}
           </CommandGroup>
