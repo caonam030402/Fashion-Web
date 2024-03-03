@@ -6,6 +6,11 @@ import { ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
+interface AccordionTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> {
+  extra?: React.ReactNode;
+}
+
 const Accordion = AccordionPrimitive.Root;
 
 const AccordionItem = React.forwardRef<
@@ -22,9 +27,9 @@ AccordionItem.displayName = "AccordionItem";
 
 const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
+  AccordionTriggerProps
+>(({ className, children, extra, ...props }, ref) => (
+  <AccordionPrimitive.Header className="flex items-center">
     <AccordionPrimitive.Trigger
       ref={ref}
       className={cn(
@@ -34,6 +39,9 @@ const AccordionTrigger = React.forwardRef<
       {...props}
     >
       {children}
+    </AccordionPrimitive.Trigger>
+    <div>{extra}</div>
+    <AccordionPrimitive.Trigger>
       <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200" />
     </AccordionPrimitive.Trigger>
   </AccordionPrimitive.Header>

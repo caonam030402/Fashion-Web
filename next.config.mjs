@@ -5,6 +5,9 @@ const nextConfig = {
       {
         hostname: "www.etq-amsterdam.com",
       },
+      {
+        hostname: "cdn.shopify.com",
+      },
     ],
   },
 };
