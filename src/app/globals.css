@@ -78,3 +78,8 @@
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
     1px 1px 0 black;
 }
+.shadow-border {
+  box-shadow: 1px 0 var(--bc), 0 1px var(--bc), 1px 1px var(--bc),
+    1px 0 var(--bc) inset, 0 1px var(--bc) inset;
+  --bc: #eaeaea;
+}
