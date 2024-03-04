@@ -15,6 +15,8 @@ import Image from "next/image";
 import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
 import Underline from "../ui/underline";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { path } from "@/constants/path";
 
 const listItem = ["Footwear", "Menswear", "Sale", "Help"];
 
@@ -27,7 +29,7 @@ export default function Header() {
 
   return (
     isClient && (
-      <div>
+      <div className="">
         <div className="bg-primary py-3 text-center capitalize text-white/80 text-xs">
           Get 25% offf This Summer Sale. Grab It Fast !!!
         </div>
@@ -135,10 +137,14 @@ export default function Header() {
                           </p>
                           <div className="w-full h-[0.2px] bg-gray-300/40 my-4"></div>
                           <div className="flex justify-between gap-4">
-                            <Button variant="outline" className="w-full">
-                              Create account
-                            </Button>
-                            <Button className="w-full">Login</Button>
+                            <Link className="w-full" href={path.signUp}>
+                              <Button variant="outline" className="w-full">
+                                Create account
+                              </Button>
+                            </Link>
+                            <Link href={path.signIn} className="w-full">
+                              <Button className="w-full">SignIn</Button>
+                            </Link>
                           </div>
                         </div>
                       </NavigationMenuContent>
