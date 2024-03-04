@@ -56,7 +56,7 @@ export default function Header() {
               })}
             </div>
 
-            <div className="flex items-center gap-9">
+            <div className="flex items-center">
               <div className="flex items-center px-3 py-1 hover:border-gray-300 border border-transparent rounded-lg group ">
                 <input
                   type="text"
@@ -70,7 +70,7 @@ export default function Header() {
                   <NavigationMenuList>
                     <NavigationMenuItem>
                       <NavigationMenuTrigger isIconDown={false}>
-                        <div className="relative">
+                        <div className="relative mx-4">
                           <HiOutlineShoppingBag size={22} />
                           <div className="absolute top-[-30%] rounded-full right-[-30%] text-white text-[8.5px] bg-primary w-4 h-4 flex items-center justify-center">
                             1
@@ -119,13 +119,32 @@ export default function Header() {
                         </div>
                       </NavigationMenuContent>
                     </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger isIconDown={false}>
+                        <div className="flex gap-3 items-center cursor-pointer ">
+                          <div className="flex text-sm font-medium">
+                            My account
+                          </div>
+                        </div>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="">
+                        <div className="w-[400px] p-6">
+                          <p className="text-sm">
+                            Create an account or log in to view your orders,
+                            return or adjust your personal information.
+                          </p>
+                          <div className="w-full h-[0.2px] bg-gray-300/40 my-4"></div>
+                          <div className="flex justify-between gap-4">
+                            <Button variant="outline" className="w-full">
+                              Create account
+                            </Button>
+                            <Button className="w-full">Login</Button>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
                   </NavigationMenuList>
                 </NavigationMenu>
-              </div>
-              <div className="flex gap-3 items-center cursor-pointer">
-                <Underline>
-                  <div className="flex text-sm font-medium">Login</div>
-                </Underline>
               </div>
             </div>
           </div>
