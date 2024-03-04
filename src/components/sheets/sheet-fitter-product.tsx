@@ -251,8 +251,69 @@ export default function SheetFitterProduct() {
               </AccordionContent>
             </AccordionItem>
             <AccordionItem value="item-5">
-              <AccordionTrigger className={cn("text-sm font-bold")}>
-                Material
+              <AccordionTrigger
+                extra={
+                  <Sheet>
+                    <SheetTrigger className="underline hover:no-underline transition-all duration-300 text-xs font-normal pr-2">
+                      More info
+                    </SheetTrigger>
+                    <SheetContent className="overflow-y-auto">
+                      <Image
+                        alt=""
+                        src="https://www.etq-amsterdam.com/cdn/shop/files/etq-material-guide-filter.jpg?height=200&v=1683188821"
+                        width={300}
+                        height={300}
+                        className="w-full"
+                      />
+                      <div className="mt-6">
+                        <h1 className=" font-bold">How to measure</h1>
+                        <p className="text-sm mt-3">
+                          Let’s find your perfect fit. Place a sheet of paper on
+                          the floor against the wall and put your feet (with
+                          socks) on it, heels against the wall. Make sure you
+                          lean on your feet with full power when measuring. Now
+                          you simply draw a line at the end of the biggest foot.
+                          Measure the distance with a ruler and find the size
+                          that matches it: see size table. Are you in between
+                          sizes? In that case, we suggest taking the bigger
+                          size.
+                        </p>
+                      </div>
+                      <div className="mt-6">
+                        <h1 className=" font-bold">Premium Suede</h1>
+                        <p className="text-sm mt-3">
+                          Experience unparalleled luxury with our Premium Suede
+                          collection. Crafted from the finest, most luxurious
+                          suede available. We have meticulously selected the
+                          highest quality suede. Each step feels like a caress,
+                          thanks to the unmatched softness and exceptional
+                          craftsmanship. Our Premium Suede shoes redefine what
+                          it means to walk in ultimate comfort.
+                        </p>
+                      </div>
+                      <div className="mt-6">
+                        <h1 className=" font-bold">Nappa Leather</h1>
+                        <p className="text-sm mt-3">
+                          Indulge in the epitome of luxurious comfort with our
+                          Premium Nappa Leather collection. Renowned for its
+                          buttery-soft texture and distinct natural grain, Nappa
+                          leather offers an unmatched tactile experience.
+                          Crafted with meticulous care, this leather remains
+                          unaltered by sanding, ensuring its strength and
+                          integrity are preserved. Each step you take in our
+                          Premium Nappa leather shoes is a testament to our
+                          dedication to exceptional craftsmanship. Walk with
+                          confidence, knowing that the unique structure of Nappa
+                          leather speaks to the unparalleled quality and
+                          sophistication of your choice.
+                        </p>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
+                }
+                className={cn("text-sm font-bold")}
+              >
+                <div className="flex justify-between w-full">Material</div>
               </AccordionTrigger>
               <AccordionContent>
                 <RadioGroup

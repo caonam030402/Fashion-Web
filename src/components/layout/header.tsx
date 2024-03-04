@@ -12,6 +12,9 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "../ui/sheet";
+import Underline from "../ui/underline";
+import { Button } from "../ui/button";
 
 const listItem = ["Footwear", "Menswear", "Sale", "Help"];
 
@@ -63,13 +66,66 @@ export default function Header() {
                 <IoSearchOutline size={23} />
               </div>
               <div className="relative">
-                <HiOutlineShoppingBag size={22} />
-                <div className="absolute top-[-30%] rounded-full right-[-30%] text-white text-[8.5px] bg-primary w-4 h-4 flex items-center justify-center">
-                  1
-                </div>
+                <NavigationMenu location="right-0">
+                  <NavigationMenuList>
+                    <NavigationMenuItem>
+                      <NavigationMenuTrigger isIconDown={false}>
+                        <div className="relative">
+                          <HiOutlineShoppingBag size={22} />
+                          <div className="absolute top-[-30%] rounded-full right-[-30%] text-white text-[8.5px] bg-primary w-4 h-4 flex items-center justify-center">
+                            1
+                          </div>
+                        </div>
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent className="">
+                        <div className="w-[400px] p-6">
+                          <div className="text-xs text-gray-400">
+                            New products added
+                          </div>
+                          <div className="w-full h-[0.2px] bg-gray-300/40 mt-2"></div>
+                          <div className="">
+                            {cartData.slice(0, 5).map((item, index) => (
+                              <CartItem
+                                key={index}
+                                image={item.image}
+                                name={item.name}
+                                price={item.price}
+                                size={item.size}
+                              />
+                            ))}
+                          </div>
+                          <div className="text-[13px]">
+                            <div className="w-full h-[0.2px] bg-gray-300/40"></div>
+                            <div className="my-4">
+                              <div className="flex items-center justify-between">
+                                <div>Shipping:</div>
+                                <div className="text-green-600 ">Free</div>
+                              </div>
+                              <div className="flex items-center justify-between mt-3">
+                                <div>Total:</div>
+                                <div>€671</div>
+                              </div>
+                            </div>
+                            <div className="w-full h-[0.2px] bg-gray-300/40"></div>
+                          </div>
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="text-[11px]">
+                              18 Add Item to Cart
+                            </div>
+                            <Button size="lg" className="px-10">
+                              Checkout
+                            </Button>
+                          </div>
+                        </div>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
               </div>
-              <div className="flex gap-3 items-center">
-                <div className="flex text-sm font-medium">Login</div>
+              <div className="flex gap-3 items-center cursor-pointer">
+                <Underline>
+                  <div className="flex text-sm font-medium">Login</div>
+                </Underline>
               </div>
             </div>
           </div>
@@ -78,3 +134,84 @@ export default function Header() {
     )
   );
 }
+
+interface PropsCardItem {
+  image: string;
+  name: string;
+  size: string;
+  price: number;
+}
+
+function CartItem({ image, name, price, size }: PropsCardItem) {
+  return (
+    <div className="flex items-center justify-between text-[13px] my-4">
+      <div className="flex items-center gap-5">
+        <Image className="" alt={image} src={image} width={50} height={50} />
+        <div className="">
+          <Underline>
+            <div>{name}</div>
+          </Underline>
+          <div>{size}</div>
+        </div>
+      </div>
+      <div className="flex flex-col items-end">
+        <div>€{price}</div>
+        <Underline reverse>
+          <button className="text-[12px]">Remove</button>
+        </Underline>
+      </div>
+    </div>
+  );
+}
+
+const cartData: PropsCardItem[] = [
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+  {
+    image:
+      "https://cdn.shopify.com/s/files/1/0505/9044/9849/files/ETQ_Cleaningkit_03LR_100x.jpg?v=1692694372",
+    name: "2x Deluxe Cleaning Kit",
+    price: 54,
+    size: "EU 46",
+  },
+];
