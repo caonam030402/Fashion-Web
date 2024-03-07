@@ -102,7 +102,7 @@ export default function Page() {
                 control={form.control}
                 name="confirm_password"
                 render={({ field }) => (
-                  <FormItem className="">
+                  <FormItem className="flex-1">
                     <FormLabel className={cn("text-sm font-normal")}>
                       Comfirm password*
                     </FormLabel>

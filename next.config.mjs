@@ -8,6 +8,10 @@ const nextConfig = {
       {
         hostname: "cdn.shopify.com",
       },
+      {
+        hostname: "cdn.haitrieu.com",
+      },
+      { hostname: "canhme.com" },
     ],
   },
 };

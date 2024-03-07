@@ -38,7 +38,9 @@ export default function Header() {
             {/* <div className="absolute left-[50%] translate-x-[-50%] text-3xl font-bold">
               E T Q .
             </div> */}
-            <div className="text-3xl font-bold">E T Q .</div>
+            <Link className="" href={path.home}>
+              <div className="text-3xl font-bold">E T Q .</div>
+            </Link>
             <div className="flex gap-12 text-sm font-medium absolute left-[50%] translate-x-[-50%] ">
               {listItem.map((item, index) => {
                 return (
@@ -72,12 +74,14 @@ export default function Header() {
                   <NavigationMenuList>
                     <NavigationMenuItem>
                       <NavigationMenuTrigger isIconDown={false}>
-                        <div className="relative mx-4">
-                          <HiOutlineShoppingBag size={22} />
-                          <div className="absolute top-[-30%] rounded-full right-[-30%] text-white text-[8.5px] bg-primary w-4 h-4 flex items-center justify-center">
-                            1
+                        <Link className="" href={path.cart}>
+                          <div className="relative mx-4">
+                            <HiOutlineShoppingBag size={22} />
+                            <div className="absolute top-[-30%] rounded-full right-[-30%] text-white text-[8.5px] bg-primary w-4 h-4 flex items-center justify-center">
+                              1
+                            </div>
                           </div>
-                        </div>
+                        </Link>
                       </NavigationMenuTrigger>
                       <NavigationMenuContent className="">
                         <div className="w-[400px] p-6">
@@ -114,9 +118,11 @@ export default function Header() {
                             <div className="text-[11px]">
                               18 Add Item to Cart
                             </div>
-                            <Button size="lg" className="px-10">
-                              Checkout
-                            </Button>
+                            <Link className="" href={path.cart}>
+                              <Button size="lg" className="px-10">
+                                Checkout
+                              </Button>
+                            </Link>
                           </div>
                         </div>
                       </NavigationMenuContent>
