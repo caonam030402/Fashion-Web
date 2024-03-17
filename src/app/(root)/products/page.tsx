@@ -1,14 +1,95 @@
 "use client";
 
+import FilterIcon from "/public/svgs/ic_filter.svg";
+import GridSwitchIcon from "/public/svgs/ic_grid_switch_v2.svg";
+import GridSwitchIconV1 from "/public/svgs/ic_grid_switch.svg";
+
 import Image from "next/image";
-import React from "react";
+import React, { RefObject, useEffect, useRef } from "react";
 import "swiper/css";
-import SheetFitterProduct from "@/components/sheets/sheet-fitter-product";
+import SheetFilterProduct from "@/components/sheets/sheet-filter-product";
+import ProductItem from "@/components/items/product-item";
+import UseScroll from "@/hooks/use-scroll";
+import { cn } from "@/lib/utils";
 
 export default function Page() {
+  const { valueScroll } = UseScroll();
+
   return (
-    <div className="container h-80">
-      <SheetFitterProduct />
+    <div className="container">
+      <div
+        className={cn(
+          "fixed z-10 left-[50%] justify-center translate-x-[-50%] p-[2px] transition-all duration-200 flex items-center gap-3 bg-white border rounded-full",
+          `${valueScroll > 200 ? "bottom-7" : "bottom-[-50px]"}`
+        )}
+      >
+        <SheetFilterProduct>
+          <div className="flex items-center gap-3 cursor-pointer bg-black py-3 rounded-full px-5">
+            <Image width={15} height={25} src={FilterIcon} alt="" />
+            <div className="text-xs text-white">Filter</div>
+          </div>
+        </SheetFilterProduct>
+
+        <div className="flex items-center gap-3 pr-5">
+          <Image
+            width={2000}
+            height={2000}
+            className="opacity-100 w-[17px] h-[17px]"
+            src={GridSwitchIconV1}
+            alt=""
+          />
+          <Image
+            width={2000}
+            height={2000}
+            className="opacity-60 w-[17px] h-[17px]"
+            src={GridSwitchIcon}
+            alt=""
+          />
+        </div>
+      </div>
+      <div className="flex items-center justify-between mb-5 mt-6 relative">
+        <div className="text-xs">30 items</div>
+        <div className="flex gap-3 items-center absolute right-[50%] translate-x-[50%]">
+          <Image
+            width={2000}
+            height={2000}
+            className="opacity-100 w-[17px] h-[17px]"
+            src={GridSwitchIconV1}
+            alt=""
+          />
+          <Image
+            className="opacity-60 w-[17px] h-[17px]"
+            width={2000}
+            height={2000}
+            src={GridSwitchIcon}
+            alt=""
+          />
+        </div>
+        <div>
+          <SheetFilterProduct>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              width="16"
+              height="14"
+              viewBox="0 0 16 14"
+            >
+              <path
+                fill="#000"
+                d="M3.2 5.5728v-1.712H0v-1.6h3.2V.4528h1.6v5.12H3.2Zm3.2-1.712H16v-1.6H6.4v1.6Zm4.8 9.6864v-5.12h1.6v1.808H16v1.6h-3.2v1.712h-1.6Zm-1.6-1.712v-1.6H0v1.6h9.6Z"
+              ></path>
+            </svg>
+            <div className="text-xs ">Filter & Sort</div>
+          </SheetFilterProduct>
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-10 ">
+        {Array(5)
+          .fill(0)
+          .map((item, index) => (
+            <ProductItem key={index} />
+          ))}
+      </div>
     </div>
   );
 }

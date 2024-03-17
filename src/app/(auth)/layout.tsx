@@ -3,7 +3,6 @@ import React from "react";
 import "../../app/globals.css";
 import Link from "next/link";
 import { path } from "@/constants/path";
-import useEmblaCarousel from "embla-carousel-react";
 
 export default function AuthLayout({
   children,
