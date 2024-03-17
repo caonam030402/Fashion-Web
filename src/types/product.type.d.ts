@@ -43,3 +43,12 @@ interface Size {
   id: number;
   size: string;
 }
+
+interface ProductListConfig {
+  sort_by?: "price" | "new_in" | "most_wanted" | "recommended";
+  search?: "";
+  order?: "asc" | "desc";
+  color?: string;
+  size?: string | number;
+  material?: string;
+}

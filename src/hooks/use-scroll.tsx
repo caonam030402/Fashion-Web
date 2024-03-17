@@ -9,13 +9,13 @@ export default function UseScroll() {
     setValueScroll(scrollPosition);
   };
 
-  useEffect(() => {
-    getScroll();
-    window.addEventListener("scroll", getScroll);
-    return () => {
-      window.removeEventListener("scroll", getScroll);
-    };
-  }, []);
+  //   useEffect(() => {
+  //     getScroll();
+  //     window.addEventListener("scroll", getScroll);
+  //     return () => {
+  //       window.removeEventListener("scroll", getScroll);
+  //     };
+  //   }, []);
 
   return { valueScroll };
 }

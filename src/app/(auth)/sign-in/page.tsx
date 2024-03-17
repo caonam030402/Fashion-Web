@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import Underline from "@/components/ui/underline";
 import Link from "next/link";
 import { path } from "@/constants/path";
-import { AuthSchema, authSchema } from "@/lib/rules";
+import { AuthSchema, authSchema } from "@/utils/rules";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {

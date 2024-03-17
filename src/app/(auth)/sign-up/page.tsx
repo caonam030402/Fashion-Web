@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Underline from "@/components/ui/underline";
 import { path } from "@/constants/path";
-import { AuthSchema, authSchema } from "@/lib/rules";
+import { AuthSchema, authSchema } from "@/utils/rules";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import React from "react";

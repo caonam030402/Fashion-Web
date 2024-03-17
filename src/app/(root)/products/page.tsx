@@ -5,15 +5,24 @@ import GridSwitchIcon from "/public/svgs/ic_grid_switch_v2.svg";
 import GridSwitchIconV1 from "/public/svgs/ic_grid_switch.svg";
 
 import Image from "next/image";
-import React, { RefObject, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import "swiper/css";
 import SheetFilterProduct from "@/components/sheets/sheet-filter-product";
 import ProductItem from "@/components/items/product-item";
 import UseScroll from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { productApi } from "@/services/apis/product.api";
 
 export default function Page() {
   const { valueScroll } = UseScroll();
+
+  const { data: productData } = useQuery({
+    queryKey: ["todos"],
+    queryFn: () => productApi.getProduct({}),
+  });
+
+  const products = productData?.data.data;
 
   return (
     <div className="container">
@@ -84,10 +93,9 @@ export default function Page() {
         </div>
       </div>
       <div className="grid grid-cols-3 gap-10 ">
-        {Array(5)
-          .fill(0)
-          .map((item, index) => (
-            <ProductItem key={index} />
+        {products &&
+          products.map((product, index) => (
+            <ProductItem product={product} key={index} />
           ))}
       </div>
     </div>
