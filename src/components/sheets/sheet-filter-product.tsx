@@ -107,8 +107,12 @@ const sizeClothing = ["S", "M", "L", "XL"];
 
 export default function SheetFilterProduct({
   children,
+  colors,
+  sizes,
 }: {
   children: React.ReactNode;
+  colors: Color[];
+  sizes: Size[];
 }) {
   return (
     <div>
@@ -158,10 +162,10 @@ export default function SheetFilterProduct({
                         className="bg-w flex items-center justify-center flex-col gap-2 p-2 w-[19.8%] shadow-border"
                       >
                         <div
-                          style={{ background: `${item.hex}` }}
+                          style={{ background: `${item.code}` }}
                           className="w-4 h-4 rounded-full"
                         ></div>
-                        <div className="text-xs">{item.title}</div>
+                        <div className="text-xs">{item.name}</div>
                       </div>
                     ))}
                   </div>
@@ -184,13 +188,13 @@ export default function SheetFilterProduct({
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {dataSizeShoe.map((item) => (
-                              <TableRow key={item.CM}>
+                            {sizes.map((item) => (
+                              <TableRow key={item.size}>
                                 <TableCell className="font-medium">
-                                  {item.SIZE}
+                                  {item.size}
                                 </TableCell>
-                                <TableCell>{item.CM}</TableCell>
-                                <TableCell>{item.CM}</TableCell>
+                                <TableCell>{item.size}</TableCell>
+                                <TableCell>{item.size}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
@@ -227,23 +231,6 @@ export default function SheetFilterProduct({
                 <AccordionContent>
                   <div className="flex flex-wrap ">
                     {sizeShoe.map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-w flex items-center h-11 justify-center flex-col gap-2 p-2 w-[14.27%] shadow-border"
-                      >
-                        <div className="text-xs">{item}</div>
-                      </div>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-              <AccordionItem value="item-4">
-                <AccordionTrigger className={cn("text-sm font-bold")}>
-                  Clothing size
-                </AccordionTrigger>
-                <AccordionContent>
-                  <div className="flex flex-wrap ">
-                    {sizeClothing.map((item, index) => (
                       <div
                         key={index}
                         className="bg-w flex items-center h-11 justify-center flex-col gap-2 p-2 w-[14.27%] shadow-border"

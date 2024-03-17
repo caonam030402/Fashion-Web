@@ -18,11 +18,39 @@ export default function Page() {
   const { valueScroll } = UseScroll();
 
   const { data: productData } = useQuery({
-    queryKey: ["todos"],
-    queryFn: () => productApi.getProduct({}),
+    queryKey: ["products"],
+    queryFn: () => productApi.getProducts({}),
   });
 
-  const products = productData?.data.data;
+  const { data: categoriesData } = useQuery({
+    queryKey: ["products"],
+    queryFn: () => productApi.getProducts({}),
+  });
+
+  const categories = categoriesData?.data.data;
+  const products = productData && productData?.data.data;
+
+  const allColor: Color[] =
+    (products &&
+      products.reduce((acc: Color[], product: Product) => {
+        if (!acc.some((item) => item.id === product.color.id)) {
+          acc.push(product.color);
+        }
+        return acc;
+      }, [])) ||
+    [];
+
+  const allSize = (products && products.map((item) => item.sizes)) || [];
+
+  // const allSize: Size[] =
+  //   (products &&
+  //     products.reduce((acc: Size[], product: Product) => {
+  //       if (!acc.some((item) => item.id === product.sizes.id)) {
+  //         acc.push(product.color);
+  //       }
+  //       return acc;
+  //     }, [])) ||
+  //   [];
 
   return (
     <div className="container">
@@ -32,7 +60,7 @@ export default function Page() {
           `${valueScroll > 200 ? "bottom-7" : "bottom-[-50px]"}`
         )}
       >
-        <SheetFilterProduct>
+        <SheetFilterProduct sizes={allSize} colors={allColor}>
           <div className="flex items-center gap-3 cursor-pointer bg-black py-3 rounded-full px-5">
             <Image width={15} height={25} src={FilterIcon} alt="" />
             <div className="text-xs text-white">Filter</div>
@@ -75,7 +103,7 @@ export default function Page() {
           />
         </div>
         <div>
-          <SheetFilterProduct>
+          <SheetFilterProduct sizes={allSize} colors={allColor}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

@@ -4,7 +4,11 @@ import { http } from "@/utils/http";
 const URL = "products";
 
 export const productApi = {
-  getProduct(params: ProductListConfig) {
+  getProducts(params: ProductListConfig) {
     return http.get<SuccessResponse<Product[]>>(URL, { params });
+  },
+
+  getCategories() {
+    return http.get<SuccessResponse<Product[]>>(`${URL}/category`);
   },
 };

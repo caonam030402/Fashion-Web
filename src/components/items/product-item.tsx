@@ -7,7 +7,7 @@ interface Props {
 }
 
 export default function ProductItem({ product }: Props) {
-  console.log(product.colorVariations[0].code);
+  // console.log(product.colorVariations[0].code);
   return (
     <div className="text-sm">
       <div className="w-full relative pb-[100%]">
