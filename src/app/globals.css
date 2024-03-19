@@ -70,16 +70,24 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
+
 .text-stroke-3 {
   text-shadow: -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black,
     1px 1px 0 black;
 }
+
 .shadow-border {
-  box-shadow: 1px 0 var(--bc), 0 1px var(--bc), 1px 1px var(--bc),
-    1px 0 var(--bc) inset, 0 1px var(--bc) inset;
+  box-shadow: 1px 0 var(--bc), 0 1px var(--bc), 1px 1px var(--bc), 1px 0 var(--bc) inset, 0 1px var(--bc) inset;
   --bc: #eaeaea;
+}
+
+.shadow-border-active {
+  box-shadow: 1px 0 var(--bc), 0 1px var(--bc), 1px 1px var(--bc), 1px 0 var(--bc) inset, 0 1px var(--bc) inset;
+  --bc: #000000;
+  z-index: 3;
 }

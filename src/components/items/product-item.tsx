@@ -28,7 +28,7 @@ export default function ProductItem({ product }: Props) {
         %
       </p>
       <h1 className="font-bold my-2">{product.name}</h1>
-      <div className="text-xs text-black/40">{product.material}</div>
+      <div className="text-xs text-black/40">{product.material.name}</div>
       <div className="my-2">
         <span className="text-xs text-black/40 mr-2 line-through">
           {product.price_before_discount}$

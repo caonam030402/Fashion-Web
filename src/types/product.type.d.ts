@@ -7,7 +7,7 @@ interface Product {
   images: string[];
   sold: number;
   description: string;
-  material: string;
+  material: Material;
   category: Category;
   color: Color;
 
@@ -42,6 +42,12 @@ interface ColorVariation {
 interface Size {
   id: number;
   size: string;
+  category?: Category;
+}
+
+interface Material {
+  id: number;
+  name: string;
 }
 
 interface ProductListConfig {
@@ -51,4 +57,10 @@ interface ProductListConfig {
   color?: string;
   size?: string | number;
   material?: string;
+}
+
+interface ColorSizeMaterial {
+  sizes: Size[];
+  colors: Color[];
+  materials: Material[];
 }

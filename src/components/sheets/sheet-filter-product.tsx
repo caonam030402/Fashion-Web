@@ -1,6 +1,6 @@
 "use client";
-import React, { useCallback } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Sheet,
@@ -33,17 +33,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import { createSearchParamsBailoutProxy } from "next/dist/client/components/searchparams-bailout-proxy";
 import UserQueryConfig from "@/hooks/use-query-config";
 import { createSearchParam } from "@/utils/create-search-param";
-
-// const listSortBy = [
-//   "Recommended",
-//   "Most Wanted",
-//   "Price Low to High",
-//   "Price High to Low",
-//   "New In",
-// ];
+import { useQuery } from "@tanstack/react-query";
+import { productApi } from "@/services/apis/product.api";
+import { omit } from "lodash";
 
 const listMaterial = [
   "Nubuck Leather",
@@ -111,27 +105,35 @@ const sizeClothing = ["S", "M", "L", "XL"];
 
 export default function SheetFilterProduct({
   children,
-  colors,
-  sizes,
+  lengthProduct,
 }: {
   children: React.ReactNode;
-  colors: Color[];
-  sizes: Size[];
+  lengthProduct: number;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const queryConfig = UserQueryConfig();
 
   const listSortBy = [
     {
       name: "New In",
-      query: createSearchParam({ ...queryConfig, sortBy: "new_in" }),
+      active: "new_in",
+      query: createSearchParam({
+        ...omit(queryConfig, "order"),
+        sortBy: "new_in",
+      }),
     },
     {
       name: "Most Wanted",
-      query: createSearchParam({ ...queryConfig, sortBy: "most_wanted" }),
+      active: "most_wanted",
+      query: createSearchParam({
+        ...omit(queryConfig, "order"),
+        sortBy: "most_wanted",
+      }),
     },
     {
       name: "Price Low to High",
+      active: "asc",
       query: createSearchParam({
         ...queryConfig,
         order: "asc",
@@ -140,6 +142,7 @@ export default function SheetFilterProduct({
     },
     {
       name: "Price High to Low",
+      active: "desc",
       query: createSearchParam({
         ...queryConfig,
         order: "desc",
@@ -147,6 +150,40 @@ export default function SheetFilterProduct({
       }),
     },
   ];
+
+  const { data } = useQuery({
+    queryKey: ["color-material-size"],
+    queryFn: () => productApi.getColorsMaterialsSizes(),
+  });
+
+  const colorsMaterialsSizes = data?.data.data;
+
+  const filterShoeSize = (type: "Footwear" | "Menswear") => {
+    return colorsMaterialsSizes?.sizes.filter((item) => {
+      return item.category?.name === "Footwear";
+    });
+  };
+
+  const handleResetSearchParams = () => {
+    router.push(pathname);
+  };
+
+  const isActive = (
+    value: string,
+    type: "color" | "size" | "sortBy" | "material"
+  ) => {
+    switch (type) {
+      case "color":
+        return queryConfig.color === value;
+      case "size":
+        return queryConfig.size === value;
+      case "sortBy":
+        return queryConfig.sortBy === value || queryConfig.order === value;
+      case "material":
+        return queryConfig.material === value;
+      default:
+    }
+  };
 
   return (
     <div>
@@ -180,6 +217,7 @@ export default function SheetFilterProduct({
                           href={pathname + "?" + item.query}
                         >
                           <RadioGroupItem
+                            checked={isActive(item.active, "sortBy")}
                             value={item.name}
                             id={index.toString()}
                           />
@@ -202,17 +240,29 @@ export default function SheetFilterProduct({
                 </AccordionTrigger>
                 <AccordionContent>
                   <div className="flex flex-wrap ">
-                    {colors.map((item, index) => (
-                      <div
+                    {colorsMaterialsSizes?.colors.map((item, index) => (
+                      <Link
+                        href={
+                          pathname +
+                          "?" +
+                          createSearchParam({
+                            ...queryConfig,
+                            color: item.name,
+                          })
+                        }
                         key={index}
-                        className="bg-w flex items-center justify-center flex-col gap-2 p-2 w-[19.8%] shadow-border"
+                        className={`bg-w flex items-center justify-center flex-col gap-2 p-2 w-[19.8%] ${
+                          isActive(item.name, "color")
+                            ? "shadow-border-active"
+                            : "shadow-border"
+                        }`}
                       >
                         <div
                           style={{ background: `${item.code}` }}
                           className="w-4 h-4 rounded-full"
                         ></div>
                         <div className="text-xs">{item.name}</div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </AccordionContent>
@@ -234,7 +284,7 @@ export default function SheetFilterProduct({
                             </TableRow>
                           </TableHeader>
                           <TableBody>
-                            {sizes.map((item) => (
+                            {filterShoeSize("Footwear")?.map((item) => (
                               <TableRow key={item.size}>
                                 <TableCell className="font-medium">
                                   {item.size}
@@ -276,13 +326,25 @@ export default function SheetFilterProduct({
 
                 <AccordionContent>
                   <div className="flex flex-wrap ">
-                    {sizeShoe.map((item, index) => (
-                      <div
+                    {filterShoeSize("Footwear")?.map((item, index) => (
+                      <Link
+                        href={
+                          pathname +
+                          "?" +
+                          createSearchParam({
+                            ...queryConfig,
+                            size: item.size,
+                          })
+                        }
                         key={index}
-                        className="bg-w flex items-center h-11 justify-center flex-col gap-2 p-2 w-[14.27%] shadow-border"
+                        className={`bg-w flex items-center h-11 justify-center flex-col gap-2 p-2 w-[14.25%] ${
+                          isActive(item.size, "size")
+                            ? "shadow-border-active"
+                            : "shadow-border"
+                        }`}
                       >
-                        <div className="text-xs">{item}</div>
-                      </div>
+                        <div className="text-xs">{item.size}</div>
+                      </Link>
                     ))}
                   </div>
                 </AccordionContent>
@@ -358,11 +420,29 @@ export default function SheetFilterProduct({
                     className="flex flex-col gap-6 "
                     defaultValue="comfortable"
                   >
-                    {listMaterial.map((item, index) => (
+                    {colorsMaterialsSizes?.materials.map((item, index) => (
                       <div key={index} className="flex items-center space-x-2 ">
-                        <RadioGroupItem value={item} id={index.toString()} />
-                        <Label htmlFor={index.toString()} className="text-xs">
-                          {item}
+                        <Link
+                          href={
+                            pathname +
+                            "?" +
+                            createSearchParam({
+                              ...queryConfig,
+                              material: item.id,
+                            })
+                          }
+                        >
+                          <RadioGroupItem
+                            checked={isActive(item.id.toString(), "material")}
+                            value={item.name}
+                            id={item.name.toString()}
+                          />
+                        </Link>
+                        <Label
+                          htmlFor={item.name.toString()}
+                          className="text-xs cursor-pointer"
+                        >
+                          {item.name}
                         </Label>
                       </div>
                     ))}
@@ -372,10 +452,18 @@ export default function SheetFilterProduct({
             </Accordion>
           </SheetDescription>
           <SheetFooter className="mt-3 sticky bottom-0">
-            <Button className="w-full" variant={"outline"}>
+            <Button
+              onClick={handleResetSearchParams}
+              className="w-full"
+              variant={"outline"}
+            >
               Reset
             </Button>
-            <Button className="w-full">Show</Button>
+            <Button className="w-full">
+              <SheetClose className="block w-full h-full">
+                Show {`${lengthProduct > 0 ? `(${lengthProduct})` : ""}`}
+              </SheetClose>
+            </Button>
           </SheetFooter>
         </SheetContent>
       </Sheet>

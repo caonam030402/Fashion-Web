@@ -8,7 +8,9 @@ export const productApi = {
     return http.get<SuccessResponse<Product[]>>(URL, { params });
   },
 
-  getCategories() {
-    return http.get<SuccessResponse<Product[]>>(`${URL}/category`);
+  getColorsMaterialsSizes() {
+    return http.get<SuccessResponse<ColorSizeMaterial>>(
+      `${URL}/color-size-material`
+    );
   },
 };
