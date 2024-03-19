@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-
+import React, { useCallback } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import {
   Sheet,
@@ -32,14 +32,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Link from "next/link";
+import { createSearchParamsBailoutProxy } from "next/dist/client/components/searchparams-bailout-proxy";
+import UserQueryConfig from "@/hooks/use-query-config";
+import { createSearchParam } from "@/utils/create-search-param";
 
-const listSortBy = [
-  "Recommended",
-  "Most Wanted",
-  "Price Low to High",
-  "Price High to Low",
-  "New In",
-];
+// const listSortBy = [
+//   "Recommended",
+//   "Most Wanted",
+//   "Price Low to High",
+//   "Price High to Low",
+//   "New In",
+// ];
 
 const listMaterial = [
   "Nubuck Leather",
@@ -114,6 +118,36 @@ export default function SheetFilterProduct({
   colors: Color[];
   sizes: Size[];
 }) {
+  const pathname = usePathname();
+  const queryConfig = UserQueryConfig();
+
+  const listSortBy = [
+    {
+      name: "New In",
+      query: createSearchParam({ ...queryConfig, sortBy: "new_in" }),
+    },
+    {
+      name: "Most Wanted",
+      query: createSearchParam({ ...queryConfig, sortBy: "most_wanted" }),
+    },
+    {
+      name: "Price Low to High",
+      query: createSearchParam({
+        ...queryConfig,
+        order: "asc",
+        sortBy: "price",
+      }),
+    },
+    {
+      name: "Price High to Low",
+      query: createSearchParam({
+        ...queryConfig,
+        order: "desc",
+        sortBy: "price",
+      }),
+    },
+  ];
+
   return (
     <div>
       <Sheet>
@@ -141,9 +175,21 @@ export default function SheetFilterProduct({
                   >
                     {listSortBy.map((item, index) => (
                       <div key={index} className="flex items-center space-x-2 ">
-                        <RadioGroupItem value={item} id={index.toString()} />
-                        <Label htmlFor={index.toString()} className="text-xs">
-                          {item}
+                        <Link
+                          className="cursor-pointer"
+                          href={pathname + "?" + item.query}
+                        >
+                          <RadioGroupItem
+                            value={item.name}
+                            id={index.toString()}
+                          />
+                        </Link>
+
+                        <Label
+                          htmlFor={index.toString()}
+                          className="text-xs cursor-pointer"
+                        >
+                          {item.name}
                         </Label>
                       </div>
                     ))}

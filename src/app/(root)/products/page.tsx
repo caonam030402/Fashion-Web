@@ -5,7 +5,7 @@ import GridSwitchIcon from "/public/svgs/ic_grid_switch_v2.svg";
 import GridSwitchIconV1 from "/public/svgs/ic_grid_switch.svg";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "swiper/css";
 import SheetFilterProduct from "@/components/sheets/sheet-filter-product";
 import ProductItem from "@/components/items/product-item";
@@ -13,17 +13,24 @@ import UseScroll from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "@/services/apis/product.api";
+import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import UserQueryConfig from "@/hooks/use-query-config";
 
-export default function Page() {
+export default function Page({
+  searchParams,
+}: {
+  searchParams?: ProductListConfig;
+}) {
   const { valueScroll } = UseScroll();
 
   const { data: productData } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => productApi.getProducts({}),
+    queryKey: ["products", searchParams],
+    queryFn: () => productApi.getProducts(searchParams as ProductListConfig),
   });
 
   const { data: categoriesData } = useQuery({
-    queryKey: ["products"],
+    queryKey: ["category"],
     queryFn: () => productApi.getProducts({}),
   });
 
@@ -40,17 +47,17 @@ export default function Page() {
       }, [])) ||
     [];
 
-  const allSize = (products && products.map((item) => item.sizes)) || [];
-
-  // const allSize: Size[] =
+  // const size: Size[] =
   //   (products &&
   //     products.reduce((acc: Size[], product: Product) => {
   //       if (!acc.some((item) => item.id === product.sizes.id)) {
-  //         acc.push(product.color);
+  //         acc.push(product.sizes);
   //       }
   //       return acc;
   //     }, [])) ||
   //   [];
+
+  const allSize = (products && products.map((item) => item.sizes)) || [];
 
   return (
     <div className="container">

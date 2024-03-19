@@ -17,7 +17,7 @@ interface Product {
   };
 
   colorVariations: ColorVariation[];
-  sizes: Size[];
+  sizes: Size;
   createdAt: string;
   updatedAt: string;
 }
@@ -45,7 +45,7 @@ interface Size {
 }
 
 interface ProductListConfig {
-  sort_by?: "price" | "new_in" | "most_wanted" | "recommended";
+  sortBy?: "price" | "new_in" | "most_wanted";
   search?: "";
   order?: "asc" | "desc";
   color?: string;
