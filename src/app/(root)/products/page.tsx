@@ -10,7 +10,8 @@ import UseScroll from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "@/services/apis/product.api";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { motion } from "framer-motion";
 
 export default function Page({
   searchParams,
@@ -97,7 +98,7 @@ export default function Page({
           </SheetFilterProduct>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-10 ">
+      <div className="grid grid-cols-3 gap-10">
         {products &&
           products.map((product, index) => (
             <ProductItem product={product} key={index} />

@@ -1,4 +1,6 @@
+import UseTransition from "@/hooks/use-transition";
 import { caculateDiscount } from "@/utils/calculate_discount";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 
@@ -7,9 +9,14 @@ interface Props {
 }
 
 export default function ProductItem({ product }: Props) {
-  // console.log(product.colorVariations[0].code);
+  const variants = {
+    hidden: { opacity: 0, x: 0, y: -10 },
+    enter: { opacity: 1, x: 0, y: 0 },
+    exit: { opacity: 0, x: 0, y: -100 },
+  };
+
   return (
-    <div className="text-sm">
+    <UseTransition className="text-sm">
       <div className="w-full relative pb-[100%]">
         <Image
           className="h-full w-full absolute top-0 left-0 object-cover"
@@ -44,6 +51,6 @@ export default function ProductItem({ product }: Props) {
           ></div>
         ))}
       </div>
-    </div>
+    </UseTransition>
   );
 }
