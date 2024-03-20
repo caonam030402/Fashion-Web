@@ -4,8 +4,16 @@ import { http } from "@/utils/http";
 const URL = "products";
 
 export const productApi = {
-  getProducts(params: ProductListConfig) {
-    return http.get<SuccessResponse<Product[]>>(URL, { params });
+  getProducts(params: ProductListConfig, collection: string) {
+    return http.get<SuccessResponse<Product[]>>(`${URL}/${collection}`, {
+      params,
+    });
+  },
+
+  getCategories(collection: string) {
+    return http.get<SuccessResponse<Category[]>>(
+      `${URL}/category/${collection}`
+    );
   },
 
   getColorsMaterialsSizes() {

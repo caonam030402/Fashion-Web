@@ -10,28 +10,46 @@ import UseScroll from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "@/services/apis/product.api";
-import { Suspense, useState } from "react";
-import { motion } from "framer-motion";
+import CategoryItem from "@/components/items/category-item";
 
 export default function Page({
+  params,
   searchParams,
 }: {
   searchParams?: ProductListConfig;
+  params: { collection: string };
 }) {
   const { valueScroll } = UseScroll();
-  const [allColors, setAllColors] = useState<Color[]>();
 
   const { data: productData } = useQuery({
     queryKey: ["products", searchParams],
-    queryFn: () => productApi.getProducts(searchParams as ProductListConfig),
+    queryFn: () =>
+      productApi.getProducts(
+        searchParams as ProductListConfig,
+        params.collection
+      ),
+  });
+
+  const { data: categoryData } = useQuery({
+    queryKey: ["category"],
+    queryFn: () => productApi.getCategories(params.collection),
   });
 
   const products = productData && productData?.data.data;
 
-  const lengthProduct = products ? products.length : 0;
+  const categories = categoryData && categoryData?.data.data;
 
+  const lengthProduct = products ? products.length : 0;
+  console.log(categories);
   return (
     <div className="container">
+      <div className="text-sm mb-4 mt-10 font-medium">{params.collection}</div>
+      <div className="flex gap-4">
+        {categories &&
+          categories.map((item, index) => (
+            <CategoryItem image={item.image} name={item.name} key={index} />
+          ))}
+      </div>
       <div
         className={cn(
           "fixed z-10 left-[50%] justify-center translate-x-[-50%] p-[2px] transition-all duration-200 flex items-center gap-3 bg-white border rounded-full",

@@ -22,9 +22,16 @@ interface Product {
   updatedAt: string;
 }
 
-interface Category {
+interface Collection {
   id: number;
   name: string;
+  children: Category[];
+}
+
+interface Category {
+  name: string;
+  image: string;
+  description: string;
 }
 
 interface Color {
