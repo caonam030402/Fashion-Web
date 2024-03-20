@@ -10,6 +10,10 @@ export const productApi = {
     });
   },
 
+  getProduct(param: string) {
+    return http.get<SuccessResponse<Product>>(`${URL}/detail/${param}`, {});
+  },
+
   getCategories(collection: string) {
     return http.get<SuccessResponse<Category[]>>(
       `${URL}/category/${collection}`

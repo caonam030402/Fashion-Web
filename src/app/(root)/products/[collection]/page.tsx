@@ -40,7 +40,6 @@ export default function Page({
   const categories = categoryData && categoryData?.data.data;
 
   const lengthProduct = products ? products.length : 0;
-  console.log(categories);
   return (
     <div className="container">
       <div className="text-sm mb-4 mt-10 font-medium">{params.collection}</div>

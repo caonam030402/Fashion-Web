@@ -1,5 +1,7 @@
+import { path } from "@/constants/path";
 import UseTransition from "@/hooks/use-transition";
 import { caculateDiscount } from "@/utils/calculate_discount";
+import { generateNameId } from "@/utils/generate-name-id";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,9 +28,14 @@ export default function ProductItem({ product }: Props) {
     exit: { opacity: 0, x: 0, y: -100 },
   };
 
+  const url = `${path.product}/${generateNameId({
+    name: product.name,
+    id: product.id,
+  })}`;
+
   return (
     <UseTransition className="text-sm">
-      <Link href="">
+      <Link href={url}>
         <div
           onMouseOver={handleMouseOver}
           onMouseOut={handleMouseOut}
