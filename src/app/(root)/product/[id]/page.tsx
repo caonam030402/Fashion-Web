@@ -31,7 +31,7 @@ export default function Page({
   const idProduct = getIdFromNameId(params.id);
 
   const { data: productData } = useQuery({
-    queryKey: ["product"],
+    queryKey: ["product", params.id],
     queryFn: () => productApi.getProduct(idProduct),
   });
 

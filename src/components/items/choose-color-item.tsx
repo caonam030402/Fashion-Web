@@ -1,9 +1,16 @@
+import { path } from "@/constants/path";
+import { generateNameId } from "@/utils/generate-name-id";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function ChooseItemColor({ product }: { product: Product }) {
+  const url = `${path.product}/${generateNameId({
+    name: product.name,
+    id: product.id,
+  })}`;
   return (
-    <div className="flex items-center justify-between my-5 gap-4">
+    <Link href={url} className="flex items-center justify-between my-5 gap-4">
       <div className="flex items-center gap-3">
         <Image
           alt=""
@@ -23,6 +30,6 @@ export default function ChooseItemColor({ product }: { product: Product }) {
         </div>
         <div className="text-sm font-medium"> ${product.price}</div>
       </div>
-    </div>
+    </Link>
   );
 }

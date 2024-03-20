@@ -4,7 +4,6 @@ import React from "react";
 
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -12,8 +11,9 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-import ChooseItemColor from "../items/choose-color-item";
 import Underline from "../ui/underline";
+import { path } from "@/constants/path";
+import { generateNameId } from "@/utils/generate-name-id";
 
 export default function SheetSelectSize({
   children,
