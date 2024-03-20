@@ -4,6 +4,7 @@ import React from "react";
 
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetFooter,
@@ -18,9 +19,11 @@ import { generateNameId } from "@/utils/generate-name-id";
 export default function SheetSelectSize({
   children,
   sizes,
+  setActiveSelectSize,
 }: {
   children: React.ReactNode;
   sizes?: Size[];
+  setActiveSelectSize: React.Dispatch<React.SetStateAction<string>>;
 }) {
   return (
     <div>
@@ -31,12 +34,19 @@ export default function SheetSelectSize({
         <SheetContent className="overflow-y-scroll max-h-screen">
           <SheetHeader>Choose size</SheetHeader>
           <SheetDescription className="mt-6">
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-1">
               {sizes &&
                 sizes.map((size, index) => (
-                  <div key={index} className="py-5 text-center border">
-                    {size.size}
-                  </div>
+                  <SheetClose key={index}>
+                    <button
+                      onClick={() => {
+                        setActiveSelectSize(size.size);
+                      }}
+                      className="py-5 text-center border-b"
+                    >
+                      Size: {size.size}
+                    </button>
+                  </SheetClose>
                 ))}
             </div>
             <div className="text-center mt-5">
