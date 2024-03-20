@@ -11,13 +11,10 @@ interface Product {
   category: Category;
   color: Color;
 
-  productGroup: {
-    id: number;
-    name: string;
-  };
+  productGroup: ProductGroup;
 
   colorVariations: ColorVariation[];
-  sizes: Size;
+  sizes: Size[];
   createdAt: string;
   updatedAt: string;
 }
@@ -70,4 +67,10 @@ interface ColorSizeMaterial {
   sizes: Size[];
   colors: Color[];
   materials: Material[];
+}
+
+interface ProductGroup {
+  id: number;
+  name: string;
+  products: Product[];
 }

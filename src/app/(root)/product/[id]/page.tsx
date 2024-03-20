@@ -20,6 +20,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import SheetSelectColor from "@/components/sheets/sheet-select-color";
+import SheetSelectSize from "@/components/sheets/sheet-select-size";
 
 export default function Page({
   params,
@@ -36,10 +37,12 @@ export default function Page({
 
   const product = productData?.data.data;
 
-  console.log(product);
+  const productGroup = product?.productGroup.products;
+
+  const sizes = product?.sizes;
 
   return (
-    <div className="container grid grid-cols-12 mt-4 gap-8">
+    <div className=" grid grid-cols-12 mt-4">
       <div className="col-span-7 grid grid-cols-2 gap-2">
         {product &&
           product.images.map((image, index) => (
@@ -53,7 +56,7 @@ export default function Page({
             />
           ))}
       </div>
-      <div className="col-span-5 p-8">
+      <div className="col-span-5 p-16">
         <div className=" text-xl font-medium">{product?.name}</div>
         <div className="text-black/70 text-sm">{product?.material.name}</div>
         <div className="flex items-center justify-between">
@@ -79,7 +82,7 @@ export default function Page({
 
         <div className="flex gap-5 mt-5">
           <div className="w-full">
-            <SheetSelectColor>
+            <SheetSelectColor products={productGroup}>
               <Button
                 className="w-full flex items-center justify-between text-[13px]"
                 variant="outline"
@@ -92,7 +95,7 @@ export default function Page({
           </div>
 
           <div className="w-full">
-            <SheetSelectColor>
+            <SheetSelectSize sizes={sizes}>
               <Button
                 className="w-full flex items-center justify-between text-[13px]"
                 size={"lg"}
@@ -101,7 +104,7 @@ export default function Page({
                 <span>Select size</span>
                 <IoMdArrowDropdown />
               </Button>
-            </SheetSelectColor>
+            </SheetSelectSize>
           </div>
         </div>
         <Button size={"lg"} className="w-full mt-4 text-[13px]">

@@ -14,11 +14,14 @@ import {
 
 import "swiper/css";
 import { Button } from "@/components/ui/button";
+import ChooseItemColor from "../items/choose-color-item";
 
 export default function SheetSelectColor({
   children,
+  products,
 }: {
   children: React.ReactNode;
+  products?: Product[];
 }) {
   return (
     <div>
@@ -28,19 +31,13 @@ export default function SheetSelectColor({
         </SheetTrigger>
         <SheetContent className="overflow-y-scroll max-h-screen">
           <SheetHeader>Choose colour</SheetHeader>
-          <SheetDescription className=""></SheetDescription>
-          <SheetFooter className="mt-3 sticky bottom-0">
-            <Button
-              //   onClick={handleResetSearchParams}
-              className="w-full"
-              variant={"outline"}
-            >
-              Reset
-            </Button>
-            <Button className="w-full">
-              <SheetClose className="block w-full h-full"></SheetClose>
-            </Button>
-          </SheetFooter>
+          <SheetDescription className="">
+            {products &&
+              products.map((product, index) => (
+                <ChooseItemColor product={product} key={index} />
+              ))}
+          </SheetDescription>
+          <SheetFooter className="mt-3 sticky bottom-0"></SheetFooter>
         </SheetContent>
       </Sheet>
     </div>
