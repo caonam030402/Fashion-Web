@@ -1,5 +1,6 @@
 "use client";
 
+import { toast, useToast } from "@/components/ui/use-toast";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Underline from "@/components/ui/underline";
@@ -19,12 +20,51 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import axios, { Axios, AxiosError } from "axios";
+import { authApi } from "@/services/apis/auth.api";
+import { ErrorResponse } from "@/types/utils.type";
+import { useRouter } from "next/navigation";
 
 export default function Page() {
+  const router = useRouter();
+
   const form = useForm<AuthSchema>({ resolver: yupResolver(authSchema) });
 
+  const signOutMutation = useMutation({
+    onSuccess: (data) => {
+      toast({
+        title: `${data.data.message}`,
+        description: "Bạn có thể đăng nhập vào",
+      });
+
+      router.push(path.signIn);
+    },
+    mutationFn: (body: { email: string; name: string; password: string }) => {
+      return authApi.signUp(body);
+    },
+    onError: (error: AxiosError<ErrorResponse<AuthSchema>>) => {
+      if (error.response?.status == 422) {
+        const formError = error.response?.data.data;
+
+        if (formError) {
+          Object.keys(formError).forEach((key) => {
+            form.setError(key as keyof AuthSchema, {
+              message: formError[key as keyof AuthSchema],
+              type: "Server",
+            });
+          });
+        }
+      }
+    },
+  });
+
   async function onSubmit(values: AuthSchema) {
-    console.log(values);
+    signOutMutation.mutate({
+      email: values.email,
+      name: values.name,
+      password: values.password,
+    });
   }
 
   return (
@@ -68,7 +108,7 @@ export default function Page() {
                     <Input
                       {...field}
                       className={cn(
-                        form.formState.errors.email && "border-red-300"
+                        form.formState.errors.name && "border-red-300"
                       )}
                     />
                   </FormControl>

@@ -5,5 +5,6 @@ export interface SuccessResponse<Data> {
 
 export interface ErrorResponse<Data> {
   message: string;
+  status: number;
   data?: Data;
 }
