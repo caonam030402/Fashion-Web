@@ -2,7 +2,7 @@
 import "swiper/css";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { productApi } from "@/services/apis/product.api";
+import { productApi } from "@/apis/product.api";
 import { caculateDiscount } from "@/utils/calculate_discount";
 import { getIdFromNameId } from "@/utils/generate-name-id";
 import IconProduct from "/public/svgs/ic_product.svg";

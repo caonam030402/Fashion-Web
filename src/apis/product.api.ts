@@ -1,4 +1,3 @@
-import { SuccessResponse } from "@/types/utils.type";
 import { http } from "@/utils/http";
 
 const URL = "products";

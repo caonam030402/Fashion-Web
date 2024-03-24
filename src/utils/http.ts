@@ -6,6 +6,7 @@ class Http {
 
   constructor() {
     this.instance = axios.create({
+      withCredentials: true,
       baseURL: config.baseURL,
       timeout: 10000,
       headers: {

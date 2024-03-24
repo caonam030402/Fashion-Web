@@ -16,10 +16,13 @@ import Underline from "../ui/underline";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { path } from "@/constants/path";
+import { useAppStore } from "@/services/providers";
 
 const listItem = ["Footwear", "Menswear", "Sale", "Help"];
 
 export default function Header() {
+  const { user } = useAppStore((state) => state);
+
   return (
     <div suppressHydrationWarning className="">
       <div className="bg-primary py-3 text-center capitalize text-white/80 text-xs">

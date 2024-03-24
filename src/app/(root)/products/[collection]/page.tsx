@@ -9,7 +9,7 @@ import ProductItem from "@/components/items/product-item";
 import UseScroll from "@/hooks/use-scroll";
 import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
-import { productApi } from "@/services/apis/product.api";
+import { productApi } from "@/apis/product.api";
 import CategoryItem from "@/components/items/category-item";
 
 export default function Page({

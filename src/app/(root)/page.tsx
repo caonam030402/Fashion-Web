@@ -1,4 +1,6 @@
-import Image from "next/image";
+"use client";
+
+import { useAppStore } from "@/services/providers";
 
 export default function Home() {
   return (

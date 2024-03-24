@@ -1,7 +1,7 @@
 type Role = "User" | "Admin";
 
 interface User {
-  _id: string;
+  id: string;
   roles: Role[];
   email: string;
   name?: string;

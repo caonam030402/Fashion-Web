@@ -21,9 +21,8 @@ import {
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
 import { useMutation } from "@tanstack/react-query";
-import axios, { Axios, AxiosError } from "axios";
-import { authApi } from "@/services/apis/auth.api";
-import { ErrorResponse } from "@/types/utils.type";
+import axios, { AxiosError } from "axios";
+import { authApi } from "@/apis/auth.api";
 import { useRouter } from "next/navigation";
 
 export default function Page() {
@@ -40,9 +39,11 @@ export default function Page() {
 
       router.push(path.signIn);
     },
+
     mutationFn: (body: { email: string; name: string; password: string }) => {
       return authApi.signUp(body);
     },
+
     onError: (error: AxiosError<ErrorResponse<AuthSchema>>) => {
       if (error.response?.status == 422) {
         const formError = error.response?.data.data;

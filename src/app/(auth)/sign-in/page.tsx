@@ -20,15 +20,56 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
+import { authApi } from "@/apis/auth.api";
+import { AxiosError } from "axios";
+import { setProfileToLS } from "@/utils/local-storage";
 
 const schema = authSchema.pick(["email", "password"]);
 type TypeSchema = Pick<AuthSchema, "email" | "password">;
 
 export default function Page() {
+  const router = useRouter();
   const form = useForm<TypeSchema>({ resolver: yupResolver(schema) });
 
+  const signInMutation = useMutation({
+    onSuccess: (data) => {
+      setProfileToLS(data.data.data.user);
+      toast({
+        title: `${data.data.message}`,
+        description: "Bạn có thể đăng nhập vào",
+      });
+
+      router.push(path.home);
+    },
+
+    mutationFn: (body: { email: string; password: string }) => {
+      return authApi.signIn(body);
+    },
+
+    onError: (error: AxiosError<ErrorResponse<AuthSchema>>) => {
+      if (error.response?.status == 422) {
+        const formError = error.response?.data.data;
+
+        if (formError) {
+          Object.keys(formError).forEach((key) => {
+            form.setError(key as keyof TypeSchema, {
+              message: formError[key as keyof TypeSchema],
+              type: "Server",
+            });
+          });
+        }
+      }
+    },
+  });
+
   async function onSubmit(values: TypeSchema) {
-    console.log(values);
+    signInMutation.mutate({
+      email: values.email,
+      password: values.password,
+    });
   }
 
   return (
