@@ -26,16 +26,19 @@ import { useRouter } from "next/navigation";
 import { authApi } from "@/apis/auth.api";
 import { AxiosError } from "axios";
 import { setProfileToLS } from "@/utils/local-storage";
+import { useAppStore } from "@/services/providers";
 
 const schema = authSchema.pick(["email", "password"]);
 type TypeSchema = Pick<AuthSchema, "email" | "password">;
 
 export default function Page() {
+  const { setUser } = useAppStore((state) => state);
   const router = useRouter();
   const form = useForm<TypeSchema>({ resolver: yupResolver(schema) });
 
   const signInMutation = useMutation({
     onSuccess: (data) => {
+      setUser(data.data.data.user);
       setProfileToLS(data.data.data.user);
       toast({
         title: `${data.data.message}`,

@@ -11,7 +11,7 @@ import { Inter } from "next/font/google";
 import "../../app/globals.css";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import { Providers } from "@/services/providers";
+import { Providers, useAppStore } from "@/services/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +25,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const { user } = useAppStore((state) => state);
+
   return (
     <Providers>
       <html lang="en">

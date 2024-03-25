@@ -3,7 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createContext, useContext, useRef, useState } from "react";
 import { type StoreApi, useStore } from "zustand";
-import { Store, store } from "./stores";
+import { Store, store } from "./store/stores";
 
 export const StoreContext = createContext<StoreApi<Store> | null>(null);
 
