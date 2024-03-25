@@ -78,7 +78,7 @@ export default function Header() {
 
   return (
     isClient && (
-      <div suppressHydrationWarning className="">
+      <div className="">
         <div className="bg-primary py-3 text-center capitalize text-white/80 text-xs">
           Get 25% offf This Summer Sale. Grab It Fast !!!
         </div>
