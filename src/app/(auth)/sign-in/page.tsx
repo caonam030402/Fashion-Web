@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import Underline from "@/components/ui/underline";
 import Link from "next/link";
 import { path } from "@/constants/path";
-import { AuthSchema, authSchema } from "@/utils/rules";
+import { AuthSchema, authSchema } from "@/lib/rules";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import {
@@ -25,7 +25,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { authApi } from "@/apis/auth.api";
 import { AxiosError } from "axios";
-import { setProfileToLS } from "@/utils/local-storage";
+import { setProfileToLS } from "@/lib/local-storage";
 import { useAppStore } from "@/services/providers";
 
 const schema = authSchema.pick(["email", "password"]);

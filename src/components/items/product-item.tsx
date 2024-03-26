@@ -1,7 +1,7 @@
 import { path } from "@/constants/path";
 import UseTransition from "@/hooks/use-transition";
-import { caculateDiscount } from "@/utils/calculate_discount";
-import { generateNameId } from "@/utils/generate-name-id";
+import { caculateDiscount } from "@/lib/calculate_discount";
+import { generateNameId } from "@/lib/generate-name-id";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";

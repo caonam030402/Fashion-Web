@@ -14,7 +14,7 @@ import {
 
 import Underline from "../ui/underline";
 import { path } from "@/constants/path";
-import { generateNameId } from "@/utils/generate-name-id";
+import { generateNameId } from "@/lib/generate-name-id";
 
 export default function SheetSelectSize({
   children,

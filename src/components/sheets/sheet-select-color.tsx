@@ -16,7 +16,7 @@ import "swiper/css";
 import { Button } from "@/components/ui/button";
 import ChooseItemColor from "../items/choose-color-item";
 import { path } from "@/constants/path";
-import { generateNameId } from "@/utils/generate-name-id";
+import { generateNameId } from "@/lib/generate-name-id";
 
 export default function SheetSelectColor({
   children,

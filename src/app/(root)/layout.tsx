@@ -1,5 +1,6 @@
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 export default function Layout({
   children,
@@ -11,6 +12,7 @@ export default function Layout({
       <Header />
       {children}
       <Footer />
+      <ReactQueryDevtools initialIsOpen={false} />
     </div>
   );
 }

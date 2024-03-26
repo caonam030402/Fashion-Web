@@ -3,13 +3,13 @@ import "swiper/css";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { productApi } from "@/apis/product.api";
-import { caculateDiscount } from "@/utils/calculate_discount";
-import { getIdFromNameId } from "@/utils/generate-name-id";
+import { caculateDiscount } from "@/lib/calculate_discount";
+import { getIdFromNameId } from "@/lib/generate-name-id";
 import IconProduct from "/public/svgs/ic_product.svg";
 import { PiCopy } from "react-icons/pi";
 import IconExchange from "/public/svgs/ic_exchange.svg";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import React, { useState } from "react";
 import { IoMdArrowDropdown } from "react-icons/io";
@@ -22,6 +22,9 @@ import {
 import SheetSelectColor from "@/components/sheets/sheet-select-color";
 import SheetSelectSize from "@/components/sheets/sheet-select-size";
 import UseTransition from "@/hooks/use-transition";
+import { OrderAddToCart, orderApi } from "@/apis/order.api";
+import { toast } from "@/components/ui/use-toast";
+import { StatusOrder } from "@/app/enums/status-order";
 
 export default function Page({
   params,
@@ -31,6 +34,7 @@ export default function Page({
 }) {
   const [activeSelectSize, setActiveSelectSize] = useState("");
   const idProduct = getIdFromNameId(params.id);
+  const queryClient = useQueryClient();
 
   const { data: productData } = useQuery({
     queryKey: ["product", params.id],
@@ -42,6 +46,26 @@ export default function Page({
   const productGroup = product?.productGroup.products;
 
   const sizes = product?.sizes;
+
+  const addToCartMutation = useMutation({
+    mutationFn: (body: OrderAddToCart) => {
+      return orderApi.addToCart(body);
+    },
+    onSuccess: (data) => {
+      queryClient.refetchQueries({
+        queryKey: ["orders", { status: StatusOrder.IN_CART }],
+      });
+
+      toast({
+        title: `12312`,
+        description: "Thêm sản phẩm thành công",
+      });
+    },
+  });
+
+  const handleAddToCart = (body: OrderAddToCart) => {
+    addToCartMutation.mutate(body);
+  };
 
   return (
     <div className=" grid grid-cols-12 mt-4">
@@ -118,7 +142,18 @@ export default function Page({
               </SheetSelectSize>
             </div>
           </div>
-          <Button size={"lg"} className="w-full mt-4 text-[13px]">
+          <Button
+            onClick={() =>
+              handleAddToCart({
+                buy_count: 1,
+                productId: product?.id,
+                price: 20000,
+                sizeId: 1,
+              })
+            }
+            size={"lg"}
+            className="w-full mt-4 text-[13px]"
+          >
             Add to bad
           </Button>
 

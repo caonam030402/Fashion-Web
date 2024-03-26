@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Underline from "@/components/ui/underline";
 import { path } from "@/constants/path";
-import { AuthSchema, authSchema } from "@/utils/rules";
+import { AuthSchema, authSchema } from "@/lib/rules";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Link from "next/link";
 import React from "react";
@@ -20,18 +20,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { cn } from "@/lib/utils";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { authApi } from "@/apis/auth.api";
 import { useRouter } from "next/navigation";
+import { StatusOrder } from "@/app/enums/status-order";
 
 export default function Page() {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const form = useForm<AuthSchema>({ resolver: yupResolver(authSchema) });
 
   const signOutMutation = useMutation({
     onSuccess: (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["orders", { status: StatusOrder.IN_CART }],
+      });
       toast({
         title: `${data.data.message}`,
         description: "Bạn có thể đăng nhập vào",

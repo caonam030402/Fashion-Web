@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/table";
 import Link from "next/link";
 import UserQueryConfig from "@/hooks/use-query-config";
-import { createSearchParam } from "@/utils/create-search-param";
+import { createSearchParam } from "@/lib/create-search-param";
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "@/apis/product.api";
 import { omit } from "lodash";

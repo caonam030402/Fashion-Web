@@ -1,5 +1,5 @@
 import { path } from "@/constants/path";
-import { generateNameId } from "@/utils/generate-name-id";
+import { generateNameId } from "@/lib/generate-name-id";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";

@@ -1,4 +1,4 @@
-import { getProfileFromLS } from "@/utils/local-storage";
+import { getProfileFromLS } from "@/lib/local-storage";
 import { StateCreator } from "zustand";
 
 export interface UserSlice {

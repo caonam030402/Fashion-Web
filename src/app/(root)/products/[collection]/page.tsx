@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { productApi } from "@/apis/product.api";
 import CategoryItem from "@/components/items/category-item";
+import { orderApi } from "@/apis/order.api";
 
 export default function Page({
   params,
