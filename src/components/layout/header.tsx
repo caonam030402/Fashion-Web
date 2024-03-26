@@ -18,6 +18,7 @@ import Link from "next/link";
 import { path } from "@/constants/path";
 import { useAppStore } from "@/services/providers";
 import { getProfileFromLS } from "@/utils/local-storage";
+import { cookies } from "next/headers";
 
 const listItem = ["Footwear", "Menswear", "Sale", "Help"];
 
