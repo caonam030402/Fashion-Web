@@ -23,7 +23,7 @@ export default function SheetSelectSize({
 }: {
   children: React.ReactNode;
   sizes?: Size[];
-  setActiveSelectSize: React.Dispatch<React.SetStateAction<string>>;
+  setActiveSelectSize: React.Dispatch<React.SetStateAction<Size | undefined>>;
 }) {
   return (
     <div>
@@ -40,7 +40,7 @@ export default function SheetSelectSize({
                   <SheetClose key={index}>
                     <button
                       onClick={() => {
-                        setActiveSelectSize(size.size);
+                        setActiveSelectSize(size && size);
                       }}
                       className="py-5 text-center border-b"
                     >

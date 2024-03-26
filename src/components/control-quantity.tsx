@@ -35,7 +35,6 @@ export default function ControlQuantity({ max, quanlity }: Props) {
 
   const isMaxValue = max !== undefined && value >= max ? true : false;
   const isMinValue = value < 1 ? true : false;
-  console.log(isMaxValue);
   return (
     <div className="flex max-w-[90px] border h-7">
       <button

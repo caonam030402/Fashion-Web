@@ -32,7 +32,7 @@ export default function Page({
   searchParams?: ProductListConfig;
   params: { id: string };
 }) {
-  const [activeSelectSize, setActiveSelectSize] = useState("");
+  const [activeSelectSize, setActiveSelectSize] = useState<Size>();
   const idProduct = getIdFromNameId(params.id);
   const queryClient = useQueryClient();
 
@@ -134,7 +134,7 @@ export default function Page({
                 >
                   <span>
                     {activeSelectSize
-                      ? "Size: " + activeSelectSize
+                      ? "Size: " + activeSelectSize.size
                       : "Select size"}
                   </span>
                   <IoMdArrowDropdown />
@@ -147,8 +147,8 @@ export default function Page({
               handleAddToCart({
                 buy_count: 1,
                 productId: product?.id,
-                price: 20000,
-                sizeId: 1,
+                price: product?.price,
+                sizeId: activeSelectSize?.id,
               })
             }
             size={"lg"}
