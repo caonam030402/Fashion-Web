@@ -1,3 +1,5 @@
+"use client";
+
 import ControlQuantity from "@/components/control-quantity";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,13 +12,28 @@ import {
 } from "@/components/ui/accordion";
 import Image from "next/image";
 import React from "react";
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { StatusOrder } from "@/app/enums/status-order";
+import { orderApi } from "@/apis/order.api";
+import { AxiosResponse } from "axios";
 
-export default function page() {
+export default function Page() {
+  const { data: orderData, refetch } = useQuery({
+    queryKey: ["orders", { status: StatusOrder.IN_CART }],
+    queryFn: () => orderApi.getOrderByStatus(StatusOrder.IN_CART),
+  });
+
+  const order =
+    orderData?.data.data !== null ? orderData?.data.data.orderDetails : null;
+
   return (
     <div className="container py-20">
-      {/* <div className="text-3xl font-bold uppercase">Your Cart</div>
-      <div className=" text-xs">Total (4 items): $182</div> */}
-
       <div className="grid grid-cols-12 gap-20">
         <div className="col-span-9 bg-white">
           <div className="grid grid-cols-12 text-sm font-medium">
@@ -27,13 +44,10 @@ export default function page() {
             <div className="col-span-2">Price</div>
           </div>
           <div className="h-[0.5px] w-full bg-black/20 my-3"></div>
-          {Array(5)
-            .fill(0)
-            .map((item, index) => (
-              <ItemInCart key={index} />
-            ))}
+          {order &&
+            order.map((item, index) => <ItemInCart order={item} key={index} />)}
         </div>
-        <div className="col-span-3 bg-white border p-5">
+        <div className="col-span-3 bg-white border p-5 sticky">
           <div className="font-bold mb-4">Summary</div>
           <div className="flex justify-between text-[13px] opacity-80 mt-5">
             <div>Subtotab</div>
@@ -109,27 +123,72 @@ export default function page() {
   );
 }
 
-function ItemInCart() {
+function ItemInCart({ order }: { order: OrderDetail }) {
+  const queryClient = useQueryClient();
+
+  const deleteOrderMutation = useMutation({
+    mutationFn: async (param: { idOrderDetail: string }) => {
+      return orderApi.deleteOrder(param);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["orders", { status: StatusOrder.IN_CART }],
+      });
+    },
+  });
+
+  const updateByCountMutation = useMutation({
+    mutationFn: (body: { buy_count: number; idOrderDetail: string }) => {
+      return orderApi.updateOrder(body);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["orders", { status: StatusOrder.IN_CART }],
+      });
+    },
+  });
+
+  const handleUpdateQuantity = (body: {
+    buy_count: number;
+    idOrderDetail: string;
+  }) => {
+    updateByCountMutation.mutate(body);
+  };
+
+  const handleDeleteOrder = (param: { idOrderDetail: string }) => {
+    console.log(param.idOrderDetail);
+    deleteOrderMutation.mutate(param);
+  };
+
   return (
     <div className="grid grid-cols-12 text-sm items-center border-b py-4">
       <div className="col-span-4 flex items-center gap-4">
         <Image
           className="w-16 h-16"
-          src="https://www.etq-amsterdam.com/cdn/shop/files/130000ETQ_230308_01LR_medium.jpg?v=1692694043"
+          src={order.product.images[0]}
           alt=""
           width={2000}
           height={2000}
         ></Image>
-        <Underline>TS 01 Essence Regular White</Underline>
+        <Underline>{order.product.name}</Underline>
       </div>
-      <div className="col-span-2">White</div>
-      <div className="col-span-2">L</div>
+      <div className="col-span-2">{order.product.color.name}</div>
+      <div className="col-span-2">{order.size.size}</div>
       <div className="col-span-2">
-        <ControlQuantity max={20} quanlity={10} />
+        <ControlQuantity
+          handleUpdateQuantity={(value) =>
+            handleUpdateQuantity({ buy_count: value, idOrderDetail: order.id })
+          }
+          id={order.id}
+          max={Number(order.product.quantity)}
+          buy_count={order.buy_count}
+        />
       </div>
       <div className="col-span-2 flex justify-between">
-        <div>$1000</div>
-        <Underline reverse>Delete</Underline>
+        <div>{order.price * order.buy_count}$</div>
+        <button onClick={() => handleDeleteOrder({ idOrderDetail: order.id })}>
+          <Underline reverse>Delete</Underline>
+        </button>
       </div>
     </div>
   );

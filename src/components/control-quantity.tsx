@@ -1,15 +1,24 @@
 "use client";
 
+import { orderApi } from "@/apis/order.api";
+import { StatusOrder } from "@/app/enums/status-order";
 import { cn } from "@/lib/utils";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useState } from "react";
 
 interface Props {
-  quanlity?: number;
+  buy_count?: number;
   max?: number;
+  id: string;
+  handleUpdateQuantity?: (value: number) => void;
 }
 
-export default function ControlQuantity({ max, quanlity }: Props) {
-  const [value, setValue] = useState(quanlity || 1);
+export default function ControlQuantity({
+  max,
+  buy_count,
+  handleUpdateQuantity,
+}: Props) {
+  const [value, setValue] = useState(buy_count || 1);
 
   const handleOnchangeValue = (event: React.ChangeEvent<HTMLInputElement>) => {
     let _value = Number(event.target.value);
@@ -23,14 +32,18 @@ export default function ControlQuantity({ max, quanlity }: Props) {
   };
 
   const handleIncrease = () => {
-    setValue((prev) => prev + 1);
+    const _value = value + 1;
+    setValue(_value);
+    handleUpdateQuantity && handleUpdateQuantity(_value);
   };
   const handleDecrease = () => {
     setValue((prev) => prev - 1);
+    handleUpdateQuantity && handleUpdateQuantity(value);
   };
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {
     let _value = Number(event.target.value);
+    handleUpdateQuantity && handleUpdateQuantity(_value);
   };
 
   const isMaxValue = max !== undefined && value >= max ? true : false;

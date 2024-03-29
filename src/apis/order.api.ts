@@ -18,4 +18,16 @@ export const orderApi = {
   async addToCart(body: OrderAddToCart) {
     return http.post(`${URL}/add-to-cart`, body);
   },
+
+  async updateOrder(body: {
+    statusId?: number;
+    buy_count?: number;
+    idOrderDetail: string;
+  }) {
+    return http.put(`${URL}/${body.idOrderDetail}`, body);
+  },
+
+  async deleteOrder(param: { idOrderDetail: string }) {
+    return http.delete(`${URL}/${param.idOrderDetail}`);
+  },
 };
