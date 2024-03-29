@@ -32,13 +32,22 @@ export default function ControlQuantity({
   };
 
   const handleIncrease = () => {
-    const _value = value + 1;
-    setValue(_value);
+    let _value = value + 1;
+    value + 1;
+    if (max !== undefined && _value > max) {
+      _value = max;
+    }
+
     handleUpdateQuantity && handleUpdateQuantity(_value);
+    setValue(_value);
   };
   const handleDecrease = () => {
-    setValue((prev) => prev - 1);
-    handleUpdateQuantity && handleUpdateQuantity(value);
+    let _value = value - 1;
+    if (_value < 1) {
+      _value = 1;
+    }
+    handleUpdateQuantity && handleUpdateQuantity(_value);
+    setValue(_value);
   };
 
   const handleBlur = (event: React.FocusEvent<HTMLInputElement, Element>) => {

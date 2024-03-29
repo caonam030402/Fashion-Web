@@ -11,7 +11,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Image from "next/image";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   QueryObserverResult,
   RefetchOptions,
@@ -32,6 +32,49 @@ export default function Page() {
   const order =
     orderData?.data.data !== null ? orderData?.data.data.orderDetails : null;
 
+  const caculateTotatPrice = order?.reduce((result, current) => {
+    return result + current.product.price * current.buy_count;
+  }, 0);
+
+  const caculateTotatPriceDiscount = order?.reduce((result, current) => {
+    return result + current.product.price_before_discount * current.buy_count;
+  }, 0);
+
+  const queryClient = useQueryClient();
+
+  const deleteOrderMutation = useMutation({
+    mutationFn: async (param: { idOrderDetail: string }) => {
+      return orderApi.deleteOrder(param);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["orders", { status: StatusOrder.IN_CART }],
+      });
+    },
+  });
+
+  const updateByCountMutation = useMutation({
+    mutationFn: (body: { buy_count: number; idOrderDetail: string }) => {
+      return orderApi.updateOrder(body);
+    },
+    onSuccess: () => {
+      queryClient.refetchQueries({
+        queryKey: ["orders", { status: StatusOrder.IN_CART }],
+      });
+    },
+  });
+
+  const handleUpdateQuantity = (body: {
+    buy_count: number;
+    idOrderDetail: string;
+  }) => {
+    updateByCountMutation.mutate(body);
+  };
+
+  const handleDeleteOrder = (param: { idOrderDetail: string }) => {
+    deleteOrderMutation.mutate(param);
+  };
+
   return (
     <div className="container py-20">
       <div className="grid grid-cols-12 gap-20">
@@ -45,25 +88,36 @@ export default function Page() {
           </div>
           <div className="h-[0.5px] w-full bg-black/20 my-3"></div>
           {order &&
-            order.map((item, index) => <ItemInCart order={item} key={index} />)}
+            order.map((item, index) => (
+              <ItemInCart
+                handleDeleteOrder={handleDeleteOrder}
+                handleUpdateQuantity={handleUpdateQuantity}
+                order={item}
+                key={index}
+              />
+            ))}
         </div>
         <div className="col-span-3 bg-white border p-5 sticky">
           <div className="font-bold mb-4">Summary</div>
           <div className="flex justify-between text-[13px] opacity-80 mt-5">
             <div>Subtotab</div>
-            <div>$6758.5</div>
+            <div>${caculateTotatPriceDiscount}</div>
           </div>
           <div className="flex justify-between text-[13px] mt-2 opacity-80 ">
             <div>Discount</div>
             <div className="flex flex-row gap-4">
-              <span>(20%)</span>
-              <span>-$1129</span>
+              <span>
+                -
+                {caculateTotatPrice &&
+                  caculateTotatPriceDiscount &&
+                  caculateTotatPriceDiscount - caculateTotatPrice}
+              </span>
             </div>
           </div>
           <div className="h-[0.5px] w-full bg-black/10 my-3"></div>
           <div className="flex justify-between mt-5 text-sm font-semibold">
             <div>Total</div>
-            <div>$6758.5</div>
+            <div>${caculateTotatPrice}</div>
           </div>
           <div className="flex mt-7 border">
             <Input
@@ -123,43 +177,19 @@ export default function Page() {
   );
 }
 
-function ItemInCart({ order }: { order: OrderDetail }) {
-  const queryClient = useQueryClient();
-
-  const deleteOrderMutation = useMutation({
-    mutationFn: async (param: { idOrderDetail: string }) => {
-      return orderApi.deleteOrder(param);
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["orders", { status: StatusOrder.IN_CART }],
-      });
-    },
-  });
-
-  const updateByCountMutation = useMutation({
-    mutationFn: (body: { buy_count: number; idOrderDetail: string }) => {
-      return orderApi.updateOrder(body);
-    },
-    onSuccess: () => {
-      queryClient.refetchQueries({
-        queryKey: ["orders", { status: StatusOrder.IN_CART }],
-      });
-    },
-  });
-
-  const handleUpdateQuantity = (body: {
+function ItemInCart({
+  order,
+  handleUpdateQuantity,
+  handleDeleteOrder,
+}: {
+  order: OrderDetail;
+  handleUpdateQuantity: (body: {
     buy_count: number;
     idOrderDetail: string;
-  }) => {
-    updateByCountMutation.mutate(body);
-  };
-
-  const handleDeleteOrder = (param: { idOrderDetail: string }) => {
-    console.log(param.idOrderDetail);
-    deleteOrderMutation.mutate(param);
-  };
-
+  }) => void;
+  handleDeleteOrder: (param: { idOrderDetail: string }) => void;
+}) {
+  console.log(order.buy_count);
   return (
     <div className="grid grid-cols-12 text-sm items-center border-b py-4">
       <div className="col-span-4 flex items-center gap-4">
@@ -185,7 +215,7 @@ function ItemInCart({ order }: { order: OrderDetail }) {
         />
       </div>
       <div className="col-span-2 flex justify-between">
-        <div>{order.price * order.buy_count}$</div>
+        <div>{order.buy_count * order.product.price}$</div>
         <button onClick={() => handleDeleteOrder({ idOrderDetail: order.id })}>
           <Underline reverse>Delete</Underline>
         </button>

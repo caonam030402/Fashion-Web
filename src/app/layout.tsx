@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { Providers } from "@/services/providers";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <Providers>
       <html lang="en">
-        <body className={inter.className}>{children}</body>
+        <body className={inter.className}>
+          {children} <Toaster />
+        </body>
       </html>
     </Providers>
   );

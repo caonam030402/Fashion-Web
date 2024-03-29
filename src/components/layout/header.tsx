@@ -85,8 +85,8 @@ export default function Header() {
               <div className="relative">
                 <NavigationMenu location="right-0">
                   <NavigationMenuList>
-                    <AccountHeader user={user} />
                     <CartHeader order={order} />
+                    <AccountHeader user={user} />
                   </NavigationMenuList>
                 </NavigationMenu>
               </div>
